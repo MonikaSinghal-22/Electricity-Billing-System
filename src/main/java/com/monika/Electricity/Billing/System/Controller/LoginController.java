@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.monika.Electricity.Billing.System.Entity.Users;
 import com.monika.Electricity.Billing.System.Service.UserService;
@@ -21,22 +23,32 @@ public class LoginController {
 	}
 	
 	@PostMapping("/createUser")
-	public String createUser(@ModelAttribute Users user) {
-		//System.out.println(user.getMeterNo()+ " "+user.getName()+" "+ user.getPassword()+" "+user.getUsername()+" "+user.getUserType());
+	public String createUser(@ModelAttribute Users user, RedirectAttributes redirectAttrs) {
 		String username = user.getUsername();
 		boolean usernameExistFlag = userService.checkUsername(username); 
 		if(usernameExistFlag) {
-			System.out.println("Username Already Exist");
+			redirectAttrs.addFlashAttribute("failureMessage", "Username Already Exist.");
 		}
 		else {
 			Users userDetails = userService.createUser(user);
 			if(userDetails != null) {
-				System.out.println("Registered Successfully");
+				redirectAttrs.addFlashAttribute("successMessage", "Account Created! Login to Continue.");
 			}
 			else {
-				System.out.println("Error occured, please try again later.");
+				redirectAttrs.addFlashAttribute("failureMessage", "Error occured, please try again later.");
 			}
 		}
-		return "index";
+		return "redirect:/";
+	}
+	
+	@PostMapping("/signin")
+	public String signin(@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttrs) {
+		if(username.equals("admin") && password.equals("admin")) {
+			redirectAttrs.addFlashAttribute("successMessage", "Success");
+		}
+		else {
+			redirectAttrs.addFlashAttribute("failureMessage", "Invalid username or password! Try Again.");
+		}
+		return "redirect:/";
 	}
 }

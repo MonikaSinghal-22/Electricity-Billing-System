@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Electricity Billing System</title>
-  <link href="/assets/fontawesome-6.4.0/css/fontawesome.css" rel="stylesheet">
+  <link href="/assets/fontawesome-6.4.0/css/fontawesome.css" rel="stylesheet"> 
   <link href="/assets/fontawesome-6.4.0/css/brands.css" rel="stylesheet">
   <link href="/assets/fontawesome-6.4.0/css/solid.css" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/login.css">
+  <link rel="stylesheet" href="/assets/css/login.css">
 </head>
 <body>
 	<div id="container" class="container">
@@ -60,7 +60,27 @@
 			<div class="col align-items-center flex-col sign-in">
 				<div class="form-wrapper align-items-center">
 					<div class="form sign-in">
-						<form action="/signin">
+						<form action="/signin" method="post">
+						
+						<div class="successMsg">
+						<span th:text="${successMessage}"></span>
+						</div>
+						<div class="failureMsg">
+						<span th:text="${failureMessage}"></span>
+						</div>
+						<!-- <div th:if="${successMessage}" th:classappend="${successMessage}" class="alert alert-success" role="alert">
+							<p th:text="${successMessage}"></p>
+						</div>
+						<div th:if="${failureMessage}" th:classappend="${failureMessage}" class="alert alert-danger" role="alert">
+							<p th:text="${failureMessage}"></p>
+						</div> -->
+						<div th:if="${param.error}" class="failureMsg">
+						<span>Invalid Username & Password</span>
+						</div>
+						<div th:if="${param.logout}" class="successMsg">
+						<span>Logged Out Sucessfully</span>
+						</div>
+						
 						<div class="input-group">
 							<i class='fa-solid fa-file-signature'></i>  
 							<input type="text" name="username" placeholder="Username" required>

@@ -279,6 +279,14 @@ input[type="radio"]{
     margin: 1rem 1rem;
 }
 
+.successMsg{
+	text-align:center;
+	color:green;
+}
+.failureMsg{
+	text-align:center;
+	color:red;
+}
 /* RESPONSIVE */
 
 @media only screen and (max-width: 425px) {
