@@ -13,8 +13,8 @@ import com.monika.Electricity.Billing.System.Entity.Users;
 import com.monika.Electricity.Billing.System.Repository.UserRepository;
 
 @Controller
-@RequestMapping("/customer")
-public class DashboardController {
+@RequestMapping("/admin/")
+public class AdminController {
 
 	@Autowired
 	private UserRepository userRepo; 
@@ -28,6 +28,7 @@ public class DashboardController {
 	
 	@GetMapping("/")
 	public String dashboard() {
-		return "customer/dashboard";
+		return "admin/dashboard";
 	}
+	
 }

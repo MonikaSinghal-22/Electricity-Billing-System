@@ -1,5 +1,6 @@
 package com.monika.Electricity.Billing.System.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -8,10 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
+	@Autowired
+	private AuthenticationSuccessHandler successHandler;
 	
 	@Bean
 	UserDetailsService getUserDetailsService() {
@@ -33,52 +38,22 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        
+
     	http.csrf().disable()
-    		.authorizeHttpRequests()
-    		.requestMatchers("/createUser","/resources/**","/assets/**").permitAll()
-    		.anyRequest().authenticated()
-    		.and()
-    		.formLogin()
-    		.loginPage("/login")     //custom login page
-    		.permitAll();            //permit custom login page
-    		
-    		/*
-    		.requestMatchers("/admin/**")
-    		//.hasRole("ADMIN")
-    		.authenticated()
-    		.and()
-    		.authorizeHttpRequests()
-    		.requestMatchers("/customer/**")
-    		//.hasRole("CUSTOMER")
-    		.authenticated()
-    		.and()
-    		.formLogin()
-    		.and()
-    		.authorizeHttpRequests()
-    		.requestMatchers("/")
-    		.permitAll()
-    		*/	
+    		.authorizeHttpRequests((authz) -> authz
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/customer/**").hasAnyRole("CUSTOMER", "ADMIN")				
+                    .requestMatchers("/createUser","/resources/**","/assets/**").permitAll()
+                    .anyRequest().authenticated()
+                    )
+    				.formLogin(form -> form
+    						.loginPage("/login")
+    						.permitAll()
+    						//.defaultSuccessUrl("/customer/",true)
+    						.successHandler(successHandler)
+    				);
  
-    	/*
-    	http
-        	
-                .authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/admin").hasRole("ADMIN")
-                .requestMatchers("/customer").hasAnyRole("CUSTOMER", "ADMIN")				
-                .requestMatchers("/","/createUser","/resources/**","/assets/**").permitAll()
-                .anyRequest().authenticated()
-                ).formLogin();
-                
-//                .formLogin(form -> form
-//            			.loginPage("/")
-//            			.permitAll()
-//            		)
-//                .csrf().disable();
- * */
- 
-        http
-                .authenticationProvider(getDaoAuthProvider());
+        http.authenticationProvider(getDaoAuthProvider());
         return http.build();
     }
 
