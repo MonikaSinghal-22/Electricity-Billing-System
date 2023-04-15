@@ -36,9 +36,9 @@
 						<div class="">
 							
 							<label>Create Account As:</label>
-							<input type="radio" name="userType" value="Customer" checked>
+							<input type="radio" name="userType" value="ROLE_CUSTOMER" checked>
 							<label for="Customer">Customer</label>
-							<input type="radio" name="userType" value="Admin">
+							<input type="radio" name="userType" value="ROLE_ADMIN">
 							<label for="Customer">Admin</label>
 						</div>
 						<div class="input-group meterNo">
@@ -60,7 +60,7 @@
 			<div class="col align-items-center flex-col sign-in">
 				<div class="form-wrapper align-items-center">
 					<div class="form sign-in">
-						<form action="/signin" method="post">
+						<form action="/login" method="post">
 						
 						<div class="successMsg">
 						<span th:text="${successMessage}"></span>
@@ -92,9 +92,9 @@
 						<div class="">
 							<i class='bx bx-mail-send'></i> 
 							<label>Logging As:</label>
-							<input type="radio" name="userType" value="Customer" checked>
+							<input type="radio" name="userType" value="ROLE_CUSTOMER" checked>
 							<label for="Customer">Customer</label>
-							<input type="radio" name="userType" value="Admin">
+							<input type="radio" name="userType" value="ROLE_ADMIN">
 							<label for="Customer"> Admin </label>
 						</div>
 						<button>Sign in</button>

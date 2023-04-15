@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+	
 	@Bean
 	UserDetailsService getUserDetailsService() {
 		return new UserDetailsServiceImpl(); 
@@ -33,13 +33,50 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        
+    	http.csrf().disable()
+    		.authorizeHttpRequests()
+    		.requestMatchers("/createUser","/resources/**","/assets/**").permitAll()
+    		.anyRequest().authenticated()
+    		.and()
+    		.formLogin()
+    		.loginPage("/login")     //custom login page
+    		.permitAll();            //permit custom login page
+    		
+    		/*
+    		.requestMatchers("/admin/**")
+    		//.hasRole("ADMIN")
+    		.authenticated()
+    		.and()
+    		.authorizeHttpRequests()
+    		.requestMatchers("/customer/**")
+    		//.hasRole("CUSTOMER")
+    		.authenticated()
+    		.and()
+    		.formLogin()
+    		.and()
+    		.authorizeHttpRequests()
+    		.requestMatchers("/")
+    		.permitAll()
+    		*/	
+ 
+    	/*
+    	http
+        	
                 .authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/admin/**").hasRole("Admin")
-                .requestMatchers("/customer/**").hasAnyRole("Customer", "Admin")				
-                .requestMatchers("/","/signin","/resources/**","/assets/**").permitAll()
-                .anyRequest().denyAll()
-                );
+                .requestMatchers("/admin").hasRole("ADMIN")
+                .requestMatchers("/customer").hasAnyRole("CUSTOMER", "ADMIN")				
+                .requestMatchers("/","/createUser","/resources/**","/assets/**").permitAll()
+                .anyRequest().authenticated()
+                ).formLogin();
+                
+//                .formLogin(form -> form
+//            			.loginPage("/")
+//            			.permitAll()
+//            		)
+//                .csrf().disable();
+ * */
+ 
         http
                 .authenticationProvider(getDaoAuthProvider());
         return http.build();

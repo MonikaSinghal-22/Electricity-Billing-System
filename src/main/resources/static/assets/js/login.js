@@ -12,7 +12,7 @@ setTimeout(() => {
 $('document').ready(function(){
 	//Meter Number
 	$('input[type=radio][name=userType]').change(function(){
-		if(this.value == 'Customer')
+		if(this.value == 'ROLE_CUSTOMER')
 		{
 			$('.meterNo').show();
 			$('#meterNo').prop('required',true);

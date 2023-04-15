@@ -2,6 +2,7 @@ package com.monika.Electricity.Billing.System.Config;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,14 +15,19 @@ public class CustomUserDetails implements UserDetails{
 	private Users user;
 	
 	public CustomUserDetails(Users user) {
-		super();
 		this.user = user;
+	}
+	
+	public CustomUserDetails() {
+		
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(user.getUserType()); 
-		return Arrays.asList(simpleGrantedAuthority);
+		//SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(user.getUserType()); 
+		return Arrays.stream(user.getUserType().split(","))
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
 	}
 
 	@Override
