@@ -22,10 +22,10 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 		Set<String> userTypes = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
 		if(userTypes.contains("ROLE_ADMIN")) {
-			response.sendRedirect("/admin/");
+			response.sendRedirect("/admin/dashboard");
 		}
 		else {
-			response.sendRedirect("/customer/");
+			response.sendRedirect("/customer/dashboard");
 		}
 		
 	}

@@ -1,16 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lan="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
 <head>
 <meta charset="UTF-8">
 <title>Admin Dashboard</title>
 </head>
 <body>
-Customer
+<section>
+
+<div class="pagetitle">
+	<h1>Dashboard</h1>
+	<nav>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="dashboard"><i class="bi bi-house-door"></i></a></li>
+			<li class="breadcrumb-item active">Dashboard</li>
+		</ol>
+	</nav>
+</div>
+Admin
 
 <h1>UserName : [[${user.username}]]</h1>
 <h1>Name : [[${user.name}]]</h1>
 <h1>UserType : [[${user.userType}]]</h1>
 <h1>Meter No : [[${user.meterNo}]]</h1>
 <a href="/logout">Logout</a>
+
+</section>
 </body>
 </html>
