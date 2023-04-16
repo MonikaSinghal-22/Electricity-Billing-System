@@ -57,8 +57,8 @@
 			</div>
 			<!-- END SIGN UP -->
 			<!-- SIGN IN -->
-			<div class="col align-items-center flex-col sign-in">
-				<div class="form-wrapper align-items-center">
+			<div class="col align-items-center flex-col sign-in inner-box" id="card">
+				<div class="form-wrapper align-items-center card-front">
 					<div class="form sign-in">
 						<form action="/login" method="post">
 						
@@ -68,19 +68,7 @@
 						<div class="failureMsg">
 						<span th:text="${failureMessage}"></span>
 						</div>
-						<!-- <div th:if="${successMessage}" th:classappend="${successMessage}" class="alert alert-success" role="alert">
-							<p th:text="${successMessage}"></p>
-						</div>
-						<div th:if="${failureMessage}" th:classappend="${failureMessage}" class="alert alert-danger" role="alert">
-							<p th:text="${failureMessage}"></p>
-						</div> -->
-						<div th:if="${param.error}" class="failureMsg">
-						<span>Invalid Username & Password</span>
-						</div>
-						<div th:if="${param.logout}" class="successMsg">
-						<span>Logged Out Sucessfully</span>
-						</div>
-						
+																		
 						<div class="input-group">
 							<i class='fa-solid fa-file-signature'></i>  
 							<input type="text" name="username" placeholder="Username" required>
@@ -100,7 +88,7 @@
 						<button>Sign in</button>
 						</form>
 						<p>
-							<b> Forgot password? </b>
+							<b> <a href="#" onclick="openForgotPassword()">Forgot password?</a> </b>
 						</p>
 						<p>
 							<span> Don't have an account? </span> <b onclick="toggle()"
@@ -108,7 +96,38 @@
 						</p>
 					</div>
 				</div>
-				<div class="form-wrapper"></div>
+				<div class="form-wrapper align-items-center card-back">
+					<div class="form sign-in">
+						<form action="/resetPassword" method="post">
+							<div class="successMsg">
+							<span th:text="${successMessage}"></span>
+							</div>
+							<div class="failureMsg">
+							<span th:text="${failureMessage}"></span>
+							</div>
+							<div class="input-group">
+								<i class='fa-solid fa-file-signature'></i>  
+								<input type="text" name="username" placeholder="Username" required>
+							</div>
+							<div class="input-group">
+								<i class='fa-solid fa-lock'></i> 
+								<input type="password" placeholder="Password" id="restPassword" name="password" required>
+							</div>
+							<div class="input-group">
+								<i class='fa-solid fa-lock'></i> 
+								<input type="password" placeholder="Confirm password" id="resetConfirmPassword" name="confirmPassword" required>
+							</div>
+							<button>Reset Password</button>
+						</form>
+						<p>
+							<b> <a href="#" onclick="openLogin()">Sign In</a> </b>
+						</p>
+						<p>
+							<span> Don't have an account? </span> <b onclick="toggle()"
+								class="pointer"> Sign up here </b>
+						</p>
+					</div>
+				</div>
 			</div>
 			<!-- END SIGN IN -->
 		</div>

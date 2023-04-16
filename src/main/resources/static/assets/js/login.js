@@ -9,6 +9,17 @@ setTimeout(() => {
 	container.classList.add('sign-in')
 }, 200)
 
+
+var card=document.getElementById("card");         
+function openForgotPassword()
+     {
+     card.style.transform = "rotateY(-180deg)";	
+     }	
+function openLogin()
+     {
+         card.style.transform = "rotateY(0deg)";	
+     }	
+
 $('document').ready(function(){
 	//Meter Number
 	$('input[type=radio][name=userType]').change(function(){
@@ -22,7 +33,7 @@ $('document').ready(function(){
 			$('.meterNo').hide();
 			$('#meterNo').prop('required',false);
 		}
-	});	
+	});
 	
 	//Password
 	var password = document.getElementById("password");
@@ -39,5 +50,22 @@ $('document').ready(function(){
 	
 	password.onchange = validatePassword;
 	confirmPassword.onkeyup = validatePassword;
+	
+	//Password(RESET)
+	var resetPassword = document.getElementById("restPassword");
+	var resetConfirmPassword = document.getElementById("resetConfirmPassword");
+	
+	function validateResetPassword(){
+		if(resetPassword.value != resetConfirmPassword.value){
+			resetConfirmPassword.setCustomValidity("Password Don't Match");
+			resetConfirmPassword.reportValidity();
+		}
+		else
+			resetConfirmPassword.setCustomValidity("");
+	}
+	
+	
+	resetPassword.onchange = validateResetPassword;
+	resetConfirmPassword.onkeyup = validateResetPassword;
 	
 });
