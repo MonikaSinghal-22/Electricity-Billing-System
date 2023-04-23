@@ -7,4 +7,6 @@ public interface UserService {
 	public Users createUser(Users user);
 	
 	public boolean checkUsername(String username);
+		
+	
 }

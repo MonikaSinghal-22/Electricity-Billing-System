@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lan="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>Edit Customer</title>
+</head>
+<body>
+<section>
+	<div class="pagetitle">
+		<h1>Dashboard</h1>
+		<nav>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/admin/dashboard"><i class="bi bi-house-door"></i></a></li>
+				<li class="breadcrumb-item active">Customer - Edit</li>
+			</ol>
+		</nav>
+	</div>
+	<div class="container">
+			<div class="successMsg">
+				<span th:text="${successMessage}"></span>
+			</div>
+			<div class="failureMsg">
+				<span th:text="${failureMessage}"></span>
+			</div>
+			
+			<div class="row">
+				<form class="row" action="/admin/updateCustomers" method="post">
+					<div class="col-lg-6">
+						<div class=card>
+							<div class="card-header">
+								<h5 class="card-title">Customer Info</h5>
+							</div>
+							<input type="hidden" th:value="${customer.id}" name="id">
+							<div class="card-body">
+								<div class="row mb-3 mt-3">
+									<label for="username" class="col-sm-3 col-form-label">Username</label>
+									<div class="col-sm-7">
+										<input type="text" class="form-control" name="username" th:value="${customer.user.username}" required>
+									</div>
+									<div class="col-sm-2">
+										<button type="submit" class="btn btn-primary">Check</button>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="name" class="col-sm-3 col-form-label">Name</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="name" th:value="${customer.name}">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="password" class="col-sm-3 col-form-label">Password</label>
+									<div class="col-sm-9">
+										<input type="password" class="form-control" name="password">
+									</div>
+								</div>
+								<input type="hidden" th:value="${customer.user.userType}" name="userType">
+								<div class="row mb-3">
+									<label for="email" class="col-sm-3 col-form-label">Email</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="email" th:value="${customer.email}">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="phone" class="col-sm-3 col-form-label">Phone</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="phone" th:value="${customer.phone}">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">State</label>
+									<div class="col-sm-9">
+										<select name="state" id="state" class="form-select">
+												<option th:each="state : ${listState}" th:value="${state.id}" th:text="${state.name}" th:selected="${state.id} == ${customer.state}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">City</label>
+									<div class="col-sm-9">
+										<select class="form-select" name="city" id="city">
+											<option th:each="city : ${cityList}" th:value="${city.id}" th:text="${city.name}" th:selected="${city.id} == ${customer.city}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="address" class="col-sm-3 col-form-label">Address</label>
+									<div class="col-sm-9">
+										<textarea class="form-control" style="height: 100px"
+											name="address">[[${customer.address}]]</textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class=card>
+							<div class="card-header">
+								<h5 class="card-title">Meter Info</h5>
+							</div>
+							<div class="card-body">
+								<div class="row mb-3 mt-3">
+									<label for="meter" class="col-sm-2 col-form-label">Meter
+										No.</label>
+									<div class="col-sm-7">
+										<input type="text" class="form-control" name="meterNo" th:value="${customer.meter.meterNo}">
+									</div>
+									<div class="col-sm-2">
+										<button type="submit" class="btn btn-primary">Generate</button>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-2 col-form-label">Meter Location</label>
+									<div class="col-sm-10">
+										<select class="form-select" name="meterLocation">
+											<option th:each="meterLocation : ${listMeterLocation}" th:value="${meterLocation.id}" th:text="${meterLocation.name}" th:selected="${meterLocation.id} == ${customer.meter.meterLocation}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-2 col-form-label">Meter Type</label>
+									<div class="col-sm-10">
+										<select class="form-select" name="meterType">
+											<option th:each="meterType : ${listMeterType}" th:value="${meterType.id}" th:text="${meterType.name}" th:selected="${meterType.id} == ${customer.meter.meterType}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-2 col-form-label">Phase Code</label>
+									<div class="col-sm-10">
+										<select class="form-select" name="phaseCode">
+											<option th:each="phaseCode : ${listPhaseCode}" th:value="${phaseCode.id}" th:text="${phaseCode.name}" th:selected="${phaseCode.id} == ${customer.meter.phaseCode}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-2 col-form-label">Bill Type</label>
+									<div class="col-sm-10">
+										<select class="form-select" name="billType">
+											<option th:each="billType : ${listBillType}" th:value="${billType.id}" th:text="${billType.name}" th:selected="${billType.id} == ${customer.meter.billType}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="days" class="col-sm-2 col-form-label">Days</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="days" value="30"
+											readonly>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="text-center">
+						<button type="submit" class="btn btn-primary">Update</button>
+						<button type="reset" class="btn btn-secondary">Reset</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	
+</section>
+</body>
+</html>

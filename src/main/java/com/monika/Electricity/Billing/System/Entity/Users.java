@@ -1,7 +1,6 @@
 package com.monika.Electricity.Billing.System.Entity;
 
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,25 +12,20 @@ public class Users {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	@Nullable
-	private String meterNo;
+
 	@NonNull
 	private String username;
 	private String name;
 	private String password;
 	private String userType;
+	private boolean accountNonLocked;
+	private boolean enabled;
 	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public String getMeterNo() {
-		return meterNo;
-	}
-	public void setMeterNo(String meterNo) {
-		this.meterNo = meterNo;
 	}
 	public String getUsername() {
 		return username;
@@ -57,5 +51,18 @@ public class Users {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+	public boolean isAccountNonLocked() {
+		return accountNonLocked;
+	}
+	public void setAccountNonLocked(boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
 	
 }

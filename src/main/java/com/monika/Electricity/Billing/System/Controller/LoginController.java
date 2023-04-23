@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.monika.Electricity.Billing.System.Entity.Customers;
+import com.monika.Electricity.Billing.System.Entity.Meters;
 import com.monika.Electricity.Billing.System.Entity.Users;
 import com.monika.Electricity.Billing.System.Repository.UserRepository;
+import com.monika.Electricity.Billing.System.Service.CustomerService;
+import com.monika.Electricity.Billing.System.Service.MeterService;
 import com.monika.Electricity.Billing.System.Service.UserService;
 
 @Controller
@@ -19,6 +23,10 @@ public class LoginController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private CustomerService customerService;
+	@Autowired
+	private MeterService meterService;
 	@Autowired
 	private UserRepository userRepo;
 	@Autowired
@@ -30,8 +38,7 @@ public class LoginController {
 	}
 	
 	@PostMapping("/createUser")
-	public String createUser(@ModelAttribute Users user, RedirectAttributes redirectAttrs) {
-		System.out.println(user.getUserType());
+	public String createUser(@ModelAttribute Users user,@ModelAttribute Customers customer,@ModelAttribute Meters meter,  RedirectAttributes redirectAttrs) {
 		
 		String username = user.getUsername();
 		boolean usernameExistFlag = userService.checkUsername(username); 
@@ -41,6 +48,13 @@ public class LoginController {
 		else {
 			Users userDetails = userService.createUser(user);
 			if(userDetails != null) {
+				String userType = userDetails.getUserType();
+				if(userType == "ROLE_CUSTOMER") {
+					customer.setUser(userDetails);
+					Customers customerDetails = customerService.createCustomer(customer);
+					meter.setCustomer(customerDetails);
+					Meters meterDetails = meterService.createMeter(meter);
+				}
 				redirectAttrs.addFlashAttribute("successMessage", "Account Created! Login to Continue.");
 			}
 			else {
