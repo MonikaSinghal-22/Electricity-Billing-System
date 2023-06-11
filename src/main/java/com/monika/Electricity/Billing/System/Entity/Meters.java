@@ -15,7 +15,7 @@ public class Meters {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int Id;
+	private int id;
 	
 	private String meterNo;
 	@Nullable
@@ -34,11 +34,11 @@ public class Meters {
 	private Customers customer;
 
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getMeterNo() {

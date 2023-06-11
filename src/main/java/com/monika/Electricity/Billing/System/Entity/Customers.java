@@ -16,7 +16,7 @@ public class Customers {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int Id;
+	private int id;
 	
 	private String name;
 	@Nullable
@@ -34,25 +34,12 @@ public class Customers {
 	@JoinColumn(name="fk_user_id")
 	private Users user;
 	
-	@OneToOne
-	@MapsId
-	@JoinColumn(name = "id")
-	private Meters meter;
-
-	public Meters getMeter() {
-		return meter;
-	}
-
-	public void setMeter(Meters meter) {
-		this.meter = meter;
-	}
-
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getName() {
@@ -113,7 +100,7 @@ public class Customers {
 
 	@Override
 	public String toString() {
-		return "Customers [Id=" + Id + ", name=" + name + ", address=" + address + ", city=" + city + ", state=" + state
+		return "Customers [Id=" + id + ", name=" + name + ", address=" + address + ", city=" + city + ", state=" + state
 				+ ", email=" + email + ", phone=" + phone + ", user=" + user + "]";
 	}
 	

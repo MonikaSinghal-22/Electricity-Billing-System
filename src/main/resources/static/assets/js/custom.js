@@ -16,7 +16,12 @@ $(document).ready(function () {
 			},
 			error: (error) => {
                      console.log(JSON.stringify(error));
-   }
+   			}
 		});
 	});
+	
+	$("reset").click(function(){
+		$("#city").empty();
+	});
+	
 });
