@@ -49,11 +49,11 @@ public class LoginController {
 			Users userDetails = userService.createUser(user);
 			if(userDetails != null) {
 				String userType = userDetails.getUserType();
-				if(userType == "ROLE_CUSTOMER") {
+				if(userType.equals("ROLE_CUSTOMER")) {
 					customer.setUser(userDetails);
 					Customers customerDetails = customerService.createCustomer(customer);
 					meter.setCustomer(customerDetails);
-					Meters meterDetails = meterService.createMeter(meter);
+					meterService.createMeter(meter);
 				}
 				redirectAttrs.addFlashAttribute("successMessage", "Account Created! Login to Continue.");
 			}

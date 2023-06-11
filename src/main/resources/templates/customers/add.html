@@ -53,10 +53,10 @@
 								<div class="row mb-3 mt-3">
 									<label for="username" class="col-sm-3 col-form-label">Username</label>
 									<div class="col-sm-7">
-										<input type="text" class="form-control" name="username" required>
+										<input type="text" class="form-control" name="username" id="username" required>
 									</div>
 									<div class="col-sm-2">
-										<button type="submit" class="btn btn-primary">Check</button>
+										<button type="button" class="btn btn-primary" id="checkUsername">Check</button>
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -89,6 +89,7 @@
 									<label class="col-sm-3 col-form-label">State</label>
 									<div class="col-sm-9">
 										<select name="state" id="state" class="form-select">
+											<option value=" ">Select State</option>
 											<option th:each="state : ${listState}" th:value="${state.id}" th:text="${state.name}"></option>
 										</select>
 									</div>
@@ -120,10 +121,10 @@
 									<label for="meter" class="col-sm-2 col-form-label">Meter
 										No.</label>
 									<div class="col-sm-7">
-										<input type="text" class="form-control" name="meterNo">
+										<input type="text" class="form-control" name="meterNo" id="meterNo">
 									</div>
 									<div class="col-sm-2">
-										<button type="submit" class="btn btn-primary">Generate</button>
+										<button type="button" class="btn btn-primary" id="generateMeterNo">Generate</button>
 									</div>
 								</div>
 								<div class="row mb-3">

@@ -19,6 +19,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Users createUser(Users user) {
 		user.setPassword(passwordEncode.encode(user.getPassword()));
+		if(user.getUserType().equals("ROLE_ADMIN")) {
+			user.setAccountNonLocked(true);
+			user.setEnabled(true);
+		}
 		return userRepo.save(user);
 	}
 

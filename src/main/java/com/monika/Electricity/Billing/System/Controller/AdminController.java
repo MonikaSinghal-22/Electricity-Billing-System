@@ -185,7 +185,13 @@ public class AdminController {
 		List<City> cityList = cityRepo.getByStateId(id);
 		Gson gson = new Gson();
 		return gson.toJson(cityList);
-		
+	}
+	
+	@ResponseBody
+	@GetMapping("/checkUsername/{username}")
+	public boolean checkUsername(@PathVariable("username") String username) {
+		boolean usernameExistFlag = userService.checkUsername(username);
+		return usernameExistFlag;
 	}
 	
 }

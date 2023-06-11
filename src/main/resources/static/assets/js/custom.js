@@ -24,4 +24,31 @@ $(document).ready(function () {
 		$("#city").empty();
 	});
 	
+	$("#checkUsername").click(function(){
+		var username = $("#username").val();
+		$.ajax({
+			type: 'GET',
+			url: '/admin/checkUsername/' + username,
+			success: function(result){
+				if(result){
+					alert("Username Already Exist. Try Again!");
+					$("#username").val("");
+				}
+			},
+			error: (error) => {
+				console.log(JSON.stringify(error));
+			}
+		});
+	});
+	
+	$("#generateMeterNo").click(function(){
+		length = 8
+		meter = "";
+		for(i=0;i<length;i++){
+			num = Math.floor(Math.random()*10);
+			meter += num;
+		}
+		$("#meterNo").val(meter);
+	});
+	
 });
