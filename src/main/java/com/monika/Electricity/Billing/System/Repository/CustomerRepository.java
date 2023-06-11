@@ -11,4 +11,7 @@ public interface CustomerRepository extends JpaRepository<Customers, Integer>{
 
 	@Query("From Customers where user.userType = :userType")
 	List<Customers> getByUserType(String userType);
+	
+	@Query("From Customers where user.id = :id")
+	Customers getByUserId(int id);
 }

@@ -30,7 +30,7 @@
 							<div class="card-header">
 								<h5 class="card-title">Customer Info</h5>
 							</div>
-							<input type="hidden" th:value="${customer.id}" name="id">
+							<input type="hidden" th:value="${customer.user.id}" name="id">
 							<div class="card-body">
 								<div class="row mb-3 mt-3">
 									<label for="username" class="col-sm-3 col-form-label">Username</label>
@@ -70,6 +70,7 @@
 									<label class="col-sm-3 col-form-label">State</label>
 									<div class="col-sm-9">
 										<select name="state" id="state" class="form-select">
+												<option value=" ">Select State</option>
 												<option th:each="state : ${listState}" th:value="${state.id}" th:text="${state.name}" th:selected="${state.id} == ${customer.state}"></option>
 										</select>
 									</div>
@@ -156,7 +157,7 @@
 					</div>
 				</form>
 			</div>
-		</div>
+	</div>
 	
 </section>
 </body>

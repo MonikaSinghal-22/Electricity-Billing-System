@@ -17,4 +17,9 @@ public class MeterServiceImpl implements MeterService {
 		return meterRepo.save(meter);
 	}
 
+	@Override
+	public Meters getMeterByCustromerId(int id) {
+		return meterRepo.getByCustomerId(id);
+	}
+
 }

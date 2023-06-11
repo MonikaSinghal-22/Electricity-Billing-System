@@ -155,8 +155,11 @@ public class AdminController {
 		m.addAttribute("customer", customer);
 		List<State> listState = stateRepo.findAll();
 		m.addAttribute("listState", listState);
-		List<City> cityList = cityRepo.getByStateId(Integer.parseInt(customer.getState()));
-		m.addAttribute("cityList", cityList);
+		if(customer.getState() != null)
+		{
+			List<City> cityList = cityRepo.getByStateId(Integer.parseInt(customer.getState()));
+			m.addAttribute("cityList", cityList);
+		}
 		List<MeterLocation> listMeterLocation = meterLocationRepo.findAll();
 		m.addAttribute("listMeterLocation", listMeterLocation);
 		List<MeterType> listMeterType = meterTypeRepo.findAll();
@@ -172,8 +175,15 @@ public class AdminController {
 	@PostMapping("/updateCustomers")
 	public String updateCustomers(@ModelAttribute Users user, @ModelAttribute Customers customer,
 			@ModelAttribute Meters meter, RedirectAttributes redirectAttrs) {
-		String username = user.getUsername();
-		System.out.println(username);
+		Users userDetails = userService.createUser(user);
+		customer.setUser(userDetails);
+		Customers c = customerService.getCustomerByUserId(user.getId());
+		customer.setId(c.getId());		
+		Customers customerDetails = customerService.createCustomer(customer);
+		meter.setCustomer(customerDetails);
+		Meters m = meterService.getMeterByCustromerId(customer.getId());
+		meter.setId(m.getId());
+		meterService.createMeter(meter);
 		return "redirect:/admin/editCustomer/" + customer.getId();
 	}
 

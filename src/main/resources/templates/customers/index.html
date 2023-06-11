@@ -39,7 +39,6 @@
 								<table class="table datatable responsiveTable">
 									<thead>
 										<tr>
-											<th scope="col">#</th>
 											<th scope="col">Name</th>
 											<th scope="col">UserName</th>
 											<th scope="col">Meter No.</th>
@@ -50,7 +49,6 @@
 									<tbody>
 										
 										<tr th:each="c : ${customerList}">
-											<th scope="row"></th>
 											<td>[[${c.name}]]</td>
 											<td>[[${c.user.username}]]</td>
 											<td>[[${c.meter.meterNo}]]</td> 

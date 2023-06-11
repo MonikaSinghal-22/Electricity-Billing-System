@@ -11,5 +11,7 @@ public interface CustomerService {
 	public List<Customers> getByUserType(String userType);
 	
 	public Customers getCustomerById(int id);
+	
+	public Customers getCustomerByUserId(int id);
 
 }

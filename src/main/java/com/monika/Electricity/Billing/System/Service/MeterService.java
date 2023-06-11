@@ -5,4 +5,6 @@ import com.monika.Electricity.Billing.System.Entity.Meters;
 public interface MeterService {
 
 	public Meters createMeter(Meters meter);
+	
+	public Meters getMeterByCustromerId(int id);
 }

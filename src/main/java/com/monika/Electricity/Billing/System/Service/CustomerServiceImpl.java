@@ -3,6 +3,8 @@ package com.monika.Electricity.Billing.System.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.stereotype.Service;
 
 import com.monika.Electricity.Billing.System.Entity.Customers;
@@ -28,5 +30,11 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customers getCustomerById(int id) {
 		return customerRepo.findById(id).get();
 	}
+
+	@Override
+	public Customers getCustomerByUserId(int id) {
+		return customerRepo.getByUserId(id);
+	}
+	
 
 }
