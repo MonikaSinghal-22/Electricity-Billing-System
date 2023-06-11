@@ -38,20 +38,19 @@ import com.monika.Electricity.Billing.System.Service.CustomerService;
 import com.monika.Electricity.Billing.System.Service.MeterService;
 import com.monika.Electricity.Billing.System.Service.UserService;
 
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
 	@Autowired
-	private UserRepository userRepo; 
+	private UserRepository userRepo;
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private CustomerService customerService;
 	@Autowired
 	private MeterService meterService;
-	
+
 	@Autowired
 	private StateRepository stateRepo;
 	@Autowired
@@ -64,58 +63,56 @@ public class AdminController {
 	private MeterTypeRepository meterTypeRepo;
 	@Autowired
 	private PhaseCodeRepository phaseCodeRepo;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
-	
-	
+
 	@ModelAttribute
-	private void userDtls(Model m,Principal p) {
+	private void userDtls(Model m, Principal p) {
 		String username = p.getName();
 		Users user = userRepo.findByUsername(username);
-		m.addAttribute("user",user);
+		m.addAttribute("user", user);
 	}
-	
+
 	@GetMapping("/dashboard")
 	public String dashboard() {
 		return "admin/dashboard";
 	}
-	
+
 	@GetMapping("/changePassword")
 	public String loadChangePassword() {
 		return "changePassword";
 	}
-	
+
 	@PostMapping("/updatePassword")
-	public String changePassword(Principal p, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, RedirectAttributes redirectAttrs) {
+	public String changePassword(Principal p, @RequestParam("oldPassword") String oldPassword,
+			@RequestParam("newPassword") String newPassword, RedirectAttributes redirectAttrs) {
 		String username = p.getName();
 		Users loginUser = userRepo.findByUsername(username);
 		boolean oldPasswordMatch = passwordEncoder.matches(oldPassword, loginUser.getPassword());
-		if(oldPasswordMatch) {
+		if (oldPasswordMatch) {
 			loginUser.setPassword(passwordEncoder.encode(newPassword));
 			Users user = userRepo.save(loginUser);
-			if(user != null) {
+			if (user != null) {
 				redirectAttrs.addFlashAttribute("successMessage", "Password Changed Successfully!");
-			}
-			else {
+			} else {
 				redirectAttrs.addFlashAttribute("failureMessage", "Error occured, please try again later.");
 			}
-			
-		}
-		else {
+
+		} else {
 			redirectAttrs.addFlashAttribute("failureMessage", "Incorrect old password.");
 		}
 		return "redirect:/admin/changePassword";
 	}
-	
+
 	@GetMapping("/customers")
 	public String getCustomers(Model m) {
 		List<Customers> customersList = customerService.getByUserType("ROLE_CUSTOMER");
 		m.addAttribute("customerList", customersList);
+		 
 		return "customers/index";
 	}
-	
+
 	@GetMapping("/addCustomer")
 	public String loadAddCustomer(Model m) {
 		List<State> listState = stateRepo.findAll();
@@ -128,19 +125,19 @@ public class AdminController {
 		m.addAttribute("listPhaseCode", listPhaseCode);
 		List<BillType> listBillType = billTypeRepo.findAll();
 		m.addAttribute("listBillType", listBillType);
-		
+
 		return "customers/add";
 	}
-	
+
 	@PostMapping("/saveCustomers")
-	public String saveCustomers(@ModelAttribute Users user, @ModelAttribute Customers customer, @ModelAttribute Meters meter, RedirectAttributes redirectAttrs) {
-				
+	public String saveCustomers(@ModelAttribute Users user, @ModelAttribute Customers customer,
+			@ModelAttribute Meters meter, RedirectAttributes redirectAttrs) {
+
 		String username = user.getUsername();
 		boolean usernameExistFlag = userService.checkUsername(username);
-		if(usernameExistFlag) {
+		if (usernameExistFlag) {
 			redirectAttrs.addFlashAttribute("failureMessage", "Username Already Exist.");
-		}
-		else {
+		} else {
 			Users userDetails = userService.createUser(user);
 			customer.setUser(userDetails);
 			Customers customerDetails = customerService.createCustomer(customer);
@@ -148,12 +145,12 @@ public class AdminController {
 			meterService.createMeter(meter);
 			redirectAttrs.addFlashAttribute("successMessage", "Customer created successfully!");
 		}
-		
+
 		return "redirect:/admin/addCustomer";
 	}
-	
+
 	@GetMapping("/editCustomer/{customer_id}")
-	public String loadEditCustomer(@PathVariable(value="customer_id") int id, Model m) {
+	public String loadEditCustomer(@PathVariable(value = "customer_id") int id, Model m) {
 		Customers customer = customerService.getCustomerById(id);
 		m.addAttribute("customer", customer);
 		List<State> listState = stateRepo.findAll();
@@ -168,17 +165,18 @@ public class AdminController {
 		m.addAttribute("listPhaseCode", listPhaseCode);
 		List<BillType> listBillType = billTypeRepo.findAll();
 		m.addAttribute("listBillType", listBillType);
-		
+
 		return "customers/edit";
 	}
-	
+
 	@PostMapping("/updateCustomers")
-	public String updateCustomers(@ModelAttribute Users user, @ModelAttribute Customers customer, @ModelAttribute Meters meter, RedirectAttributes redirectAttrs) {
+	public String updateCustomers(@ModelAttribute Users user, @ModelAttribute Customers customer,
+			@ModelAttribute Meters meter, RedirectAttributes redirectAttrs) {
 		String username = user.getUsername();
 		System.out.println(username);
-		return "redirect:/admin/editCustomer/"+customer.getId();
+		return "redirect:/admin/editCustomer/" + customer.getId();
 	}
-	
+
 	@ResponseBody
 	@GetMapping("/getCityByState/{state_id}")
 	public String getCityByState(@PathVariable("state_id") int id) {
@@ -186,12 +184,12 @@ public class AdminController {
 		Gson gson = new Gson();
 		return gson.toJson(cityList);
 	}
-	
+
 	@ResponseBody
 	@GetMapping("/checkUsername/{username}")
 	public boolean checkUsername(@PathVariable("username") String username) {
 		boolean usernameExistFlag = userService.checkUsername(username);
 		return usernameExistFlag;
 	}
-	
+
 }

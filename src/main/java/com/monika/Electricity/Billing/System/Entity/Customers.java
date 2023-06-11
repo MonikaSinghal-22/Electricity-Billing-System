@@ -34,6 +34,17 @@ public class Customers {
 	@JoinColumn(name="fk_user_id")
 	private Users user;
 	
+	@OneToOne(mappedBy = "customer")
+	private Meters meter;
+	
+	public Meters getMeter() {
+		return meter;
+	}
+
+	public void setMeter(Meters meter) {
+		this.meter = meter;
+	}
+
 	public int getId() {
 		return id;
 	}
