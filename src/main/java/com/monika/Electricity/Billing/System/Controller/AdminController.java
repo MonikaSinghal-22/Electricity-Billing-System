@@ -187,6 +187,34 @@ public class AdminController {
 		meterService.createMeter(meter);
 		return "redirect:/admin/editCustomer/" + customer.getId();
 	}
+	
+	@GetMapping("/viewCustomer/{customer_id}")
+	public String loadViewCustomer(@PathVariable(value="customer_id") int id, Model m) {
+		Customers customer = customerService.getCustomerById(id);
+		int stateId = Integer.parseInt(customer.getState());
+		State state = stateRepo.findById(stateId).get();
+		int cityId = Integer.parseInt(customer.getCity());
+		City city = cityRepo.findById(cityId).get();
+		int meterId = customer.getMeter().getId();
+		Meters meter = meterService.getMeterById(meterId);
+		int meterLocationId = Integer.parseInt(meter.getMeterLocation());
+		MeterLocation meterLocation = meterLocationRepo.findById(meterLocationId).get();
+		int meterTypeId = Integer.parseInt(meter.getMeterType());
+		MeterType meterType = meterTypeRepo.findById(meterTypeId).get();
+		int phaseCodeId = Integer.parseInt(meter.getPhaseCode());
+		PhaseCode phaseCode = phaseCodeRepo.findById(phaseCodeId).get();
+		int billTypeId = Integer.parseInt(meter.getBillType());
+		BillType billType = billTypeRepo.findById(billTypeId).get();
+		m.addAttribute("customer", customer);
+		m.addAttribute("state", state.getName());
+		m.addAttribute("city", city.getName());
+		m.addAttribute("meterNo", meter.getMeterNo());
+		m.addAttribute("meterLocation", meterLocation.getName());
+		m.addAttribute("meterType", meterType.getName());
+		m.addAttribute("phaseCode", phaseCode.getName());
+		m.addAttribute("billType", billType.getName());
+		return "customers/view";
+	}
 
 	@ResponseBody
 	@GetMapping("/getCityByState/{state_id}")

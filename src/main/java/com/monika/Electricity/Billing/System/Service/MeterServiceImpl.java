@@ -22,4 +22,9 @@ public class MeterServiceImpl implements MeterService {
 		return meterRepo.getByCustomerId(id);
 	}
 
+	@Override
+	public Meters getMeterById(int meterId) {
+		return meterRepo.findById(meterId).get();
+	}
+
 }
