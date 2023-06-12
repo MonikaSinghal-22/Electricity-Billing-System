@@ -2,6 +2,7 @@ package com.monika.Electricity.Billing.System.Controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -200,6 +201,21 @@ public class AdminController {
 	public boolean checkUsername(@PathVariable("username") String username) {
 		boolean usernameExistFlag = userService.checkUsername(username);
 		return usernameExistFlag;
+	}
+	
+	@ResponseBody
+	@GetMapping("/changeIsAccountLocked/{userId}/{flag}")
+	public String changeIsAccountLocked(@PathVariable("flag") boolean flag, @PathVariable("userId") int userId) {
+		String status = "";
+		Users user = userService.findUserById(userId);
+		if(user != null) {
+			Users u = userService.changeIsAccountLocked(user,flag);
+			status = "Status Updated.";
+		}
+		else {
+			status = "User doesn't exist!";
+		}
+		return status;
 	}
 
 }

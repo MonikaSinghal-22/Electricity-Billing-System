@@ -51,4 +51,18 @@ $(document).ready(function () {
 		$("#meterNo").val(meter);
 	});
 	
+	$("#accountNonLocked").change(function(){
+		userId = $("#userId").val();
+		$.ajax({
+			type: 'GET',
+			url: '/admin/changeIsAccountLocked/'+ userId + '/' + this.checked,
+			success: function(result){
+				alert(result);
+			},
+			error: (error) => {
+				console.log(JSON.stringify(error));
+			}
+		});
+	});
+	
 });

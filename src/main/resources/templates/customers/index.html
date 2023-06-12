@@ -39,6 +39,7 @@
 								<table class="table datatable responsiveTable">
 									<thead>
 										<tr>
+											<th style="display:none;"></th>
 											<th scope="col">Name</th>
 											<th scope="col">UserName</th>
 											<th scope="col">Meter No.</th>
@@ -49,13 +50,14 @@
 									<tbody>
 										
 										<tr th:each="c : ${customerList}">
+											<td style="display:none;"><input type="hidden" th:value="${c.user.id}" name="id" id="userId"></td>
 											<td>[[${c.name}]]</td>
 											<td>[[${c.user.username}]]</td>
 											<td>[[${c.meter.meterNo}]]</td> 
 											<td>
 												<div class="form-check form-switch">
 													<input class="form-check-input" type="checkbox"
-														role="switch" id="status" name="status" th:checked="${c.user.accountNonLocked}">
+														role="switch" id="accountNonLocked" name="accountNonLocked" th:checked="${c.user.accountNonLocked}">
 												</div>
 											</td>
 											<td>

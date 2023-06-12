@@ -31,6 +31,8 @@
 								<h5 class="card-title">Customer Info</h5>
 							</div>
 							<input type="hidden" th:value="${customer.user.id}" name="id">
+							<input type="hidden" th:value="${customer.user.accountNonLocked}" name="accountNonLocked">
+							<input type="hidden" th:value="${customer.user.enabled}" name="enabled">
 							<div class="card-body">
 								<div class="row mb-3 mt-3">
 									<label for="username" class="col-sm-3 col-form-label">Username</label>
