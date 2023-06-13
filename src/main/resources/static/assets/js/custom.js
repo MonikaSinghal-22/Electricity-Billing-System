@@ -1,3 +1,7 @@
+function closeButton(element){
+	window.location.href = element.attributes.url.value;
+}
+
 function changeAccountNonLocked(element){
 	$.ajax({
 		type: 'GET',
