@@ -1,3 +1,16 @@
+function changeAccountNonLocked(element){
+	$.ajax({
+		type: 'GET',
+		url: '/admin/changeIsAccountLocked/'+ element.id + '/' + element.checked,
+		success: function(result){
+			alert(result);
+		},
+		error: (error) => {
+			console.log(JSON.stringify(error));
+		}
+	});
+}
+
 $(document).ready(function () {
     $('#state').change(function(){
 		var stateId = $(this).val();
@@ -49,20 +62,6 @@ $(document).ready(function () {
 			meter += num;
 		}
 		$("#meterNo").val(meter);
-	});
-	
-	$("#accountNonLocked").change(function(){
-		userId = $("#userId").val();
-		$.ajax({
-			type: 'GET',
-			url: '/admin/changeIsAccountLocked/'+ userId + '/' + this.checked,
-			success: function(result){
-				alert(result);
-			},
-			error: (error) => {
-				console.log(JSON.stringify(error));
-			}
-		});
 	});
 	
 });

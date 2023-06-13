@@ -215,6 +215,12 @@ public class AdminController {
 		m.addAttribute("billType", billType.getName());
 		return "customers/view";
 	}
+	
+	@GetMapping("/deleteCustomer/{user_id}")
+	public String deleteCustomer(@PathVariable("user_id") int id) {
+		Users user = userService.disableUser(id);
+		return "redirect:/admin/customers";
+	}
 
 	@ResponseBody
 	@GetMapping("/getCityByState/{state_id}")

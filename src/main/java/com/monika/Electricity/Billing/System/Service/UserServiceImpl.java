@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService {
 		}
 		if(user.getUserType().equals("ROLE_ADMIN")) {
 			user.setAccountNonLocked(true);
-			user.setEnabled(true);
 		}
+		user.setEnabled(true);
 		return userRepo.save(user);
 	}
 
@@ -47,7 +47,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Users changeIsAccountLocked(Users user, boolean flag) {
 		user.setAccountNonLocked(flag);
-		user.setEnabled(flag);
+		return userRepo.save(user);
+	}
+
+	@Override
+	public Users disableUser(int id) {
+		Users user = userRepo.findById(id).get();
+		user.setEnabled(false);
 		return userRepo.save(user);
 	}
 
