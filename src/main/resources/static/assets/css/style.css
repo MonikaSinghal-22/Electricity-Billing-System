@@ -226,7 +226,7 @@ h6 {
 }
 
 .card-title {
-  padding: 20px 0 15px 0;
+  padding: 10px 0 5px 0;
   font-size: 18px;
   font-weight: 500;
   color: #012970;
@@ -240,7 +240,7 @@ h6 {
 }
 
 .card-body {
-  padding: 0 20px 20px 20px;
+  padding: 20px 20px 20px 20px;
 }
 
 .card-img-overlay {

@@ -14,4 +14,7 @@ public interface CustomerRepository extends JpaRepository<Customers, Integer>{
 	
 	@Query("From Customers where user.id = :id")
 	Customers getByUserId(int id);
+	
+	@Query("Select id from Customers where user.userType = :userType and user.enabled = 0000000000000001")
+	List<Integer> getActiveCustomers(String userType);
 }

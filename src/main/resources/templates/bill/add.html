@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lan="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>Create Bill</title>
+</head>
+<body>
+	<section>
+		<div class="pagetitle">
+			<h1>Dashboard</h1>
+			<nav>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/admin/dashboard"><i
+							class="bi bi-house-door"></i></a></li>
+					<li class="breadcrumb-item active">Bill - Add</li>
+				</ol>
+			</nav>
+		</div>
+
+		<div class="container">
+			<div class="successMsg">
+				<span th:text="${successMessage}"></span>
+			</div>
+			<div class="failureMsg">
+				<span th:text="${failureMessage}"></span>
+			</div>
+			<div class="row">
+				<form class="row" action="/admin/saveBill" method="post">
+					<div class="col-lg-12">
+						<div class=card>
+							<div class="card-header">
+								<h5 class="card-title">Create Bill</h5>
+							</div>
+							<div class="card-body">
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">Meter No.</label>
+									<div class="col-sm-9">
+										<select name="meterNo" id="meterNo" class="form-select" onchange="getCustomerDetailsFromMeterNo(this)">
+											<option value=" ">Select Meter</option>
+											<option th:each="meter : ${listMeter}" th:value="${meter.id}" th:text="${meter.meterNo}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="name" class="col-sm-3 col-form-label">Name</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="name" id="customerName" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="address" class="col-sm-3 col-form-label">Address</label>
+									<div class="col-sm-9">
+										<textarea class="form-control" style="height: 100px"
+											name="address" id="customerAddress" readonly></textarea>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="days" class="col-sm-3 col-form-label">Units Consumed</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="units">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">Month</label>
+									<div class="col-sm-9">
+										<select class="form-select" name="month">
+											<option value="01">January</option>
+											<option value="02">February</option>
+											<option value="03">March</option>
+											<option value="04">April</option>
+											<option value="05">May</option>
+											<option value="06">June</option>
+											<option value="07">July</option>
+											<option value="08">August</option>
+											<option value="09">September</option>
+											<option value="10">October</option>
+											<option value="11">November</option>
+											<option value="12">December</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="text-center">
+						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="button" url="/admin/dashboard" onchange="closeButton(this)" class="btn btn-secondary">Close</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</section>
+</body>
+</html>

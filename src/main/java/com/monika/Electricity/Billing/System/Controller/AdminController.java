@@ -1,8 +1,8 @@
 package com.monika.Electricity.Billing.System.Controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -218,7 +217,7 @@ public class AdminController {
 	
 	@GetMapping("/deleteCustomer/{user_id}")
 	public String deleteCustomer(@PathVariable("user_id") int id) {
-		Users user = userService.disableUser(id);
+		userService.disableUser(id);
 		return "redirect:/admin/customers";
 	}
 
@@ -243,13 +242,33 @@ public class AdminController {
 		String status = "";
 		Users user = userService.findUserById(userId);
 		if(user != null) {
-			Users u = userService.changeIsAccountLocked(user,flag);
+			userService.changeIsAccountLocked(user,flag);
 			status = "Status Updated.";
 		}
 		else {
 			status = "User doesn't exist!";
 		}
 		return status;
+	}
+	
+	@GetMapping("/calculateBill")
+	public String loadCalculateBill(Model m) {
+		List<Integer> activeCustomerIds = customerService.getActiveCustomers();
+		List<Meters> listMeter = meterService.getAllEnabledCustomersMeter(activeCustomerIds);
+		m.addAttribute("listMeter", listMeter);
+		return "bill/add";
+	}
+	
+	@ResponseBody
+	@GetMapping("/getCustomerDetailsFromMeterId/{meter_id}")
+	public List<String> getCustomerDetailsFromMeterId(@PathVariable("meter_id") int meterId) {
+		Meters meter = meterService.getMeterById(meterId);
+		String name = meter.getCustomer().getName();
+		String address = meter.getCustomer().getAddress();
+		List<String> result = new ArrayList<>();
+		result.add(name);
+		result.add(address);
+		return result;
 	}
 
 }

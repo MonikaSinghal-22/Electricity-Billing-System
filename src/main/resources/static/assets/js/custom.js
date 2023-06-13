@@ -15,6 +15,28 @@ function changeAccountNonLocked(element){
 	});
 }
 
+function getCustomerDetailsFromMeterNo(element){
+	if(element.value == ' '){
+			$("#customerName").val("");
+			$("#customerAddress").val("");	
+	}
+	else{
+		$.ajax({
+			type: 'GET', 
+			url: '/admin/getCustomerDetailsFromMeterId/' + element.value, 
+			success: function(result){
+				name = result[0];
+				address = result[1];
+				$("#customerName").val(name);
+				$("#customerAddress").val(address);			
+			},
+			error: (error) => {
+				console.log(JSON.stringify(error));
+			}		
+		});	
+	}
+}
+
 $(document).ready(function () {
     $('#state').change(function(){
 		var stateId = $(this).val();

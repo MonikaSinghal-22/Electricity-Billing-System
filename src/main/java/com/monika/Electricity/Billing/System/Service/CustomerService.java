@@ -13,5 +13,7 @@ public interface CustomerService {
 	public Customers getCustomerById(int id);
 	
 	public Customers getCustomerByUserId(int id);
+	
+	public List<Integer> getActiveCustomers();
 
 }

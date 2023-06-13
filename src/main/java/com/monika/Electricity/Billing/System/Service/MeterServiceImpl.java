@@ -1,5 +1,7 @@
 package com.monika.Electricity.Billing.System.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,4 +29,10 @@ public class MeterServiceImpl implements MeterService {
 		return meterRepo.findById(meterId).get();
 	}
 
+	@Override
+	public List<Meters> getAllEnabledCustomersMeter(List<Integer> activeCustomerIds) {
+		return meterRepo.getAllByActiveCustomerId(activeCustomerIds);
+	}
+
+	
 }
