@@ -6,4 +6,6 @@ import com.monika.Electricity.Billing.System.Entity.BillType;
 
 public interface BillTypeRepository extends JpaRepository<BillType, Integer>{
 
+	BillType findByNameContainingIgnoreCase(String name);
+
 }

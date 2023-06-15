@@ -6,4 +6,6 @@ import com.monika.Electricity.Billing.System.Entity.MeterType;
 
 public interface MeterTypeRepository extends JpaRepository<MeterType, Integer>{
 
+	MeterType findByNameContainingIgnoreCase(String meterType);
+
 }

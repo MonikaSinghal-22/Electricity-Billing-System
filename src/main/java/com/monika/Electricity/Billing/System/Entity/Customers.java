@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -33,7 +34,8 @@ public class Customers {
 	@JoinColumn(name="fk_user_id")
 	private Users user;
 	
-	@OneToOne(mappedBy = "customer")
+	
+	@OneToOne(mappedBy = "customer", cascade=CascadeType.ALL)
 	private Meters meter;
 	
 	public Meters getMeter() {

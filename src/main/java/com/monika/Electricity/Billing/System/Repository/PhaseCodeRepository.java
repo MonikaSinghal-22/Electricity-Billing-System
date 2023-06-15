@@ -6,4 +6,6 @@ import com.monika.Electricity.Billing.System.Entity.PhaseCode;
 
 public interface PhaseCodeRepository extends JpaRepository<PhaseCode, Integer>{
 
+	PhaseCode findByNameContainingIgnoreCase(String phaseCode);
+
 }

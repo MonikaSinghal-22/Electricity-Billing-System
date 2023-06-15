@@ -1,8 +1,11 @@
 package com.monika.Electricity.Billing.System.Controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,9 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
+import com.monika.Electricity.Billing.Helper.Excel;
 import com.monika.Electricity.Billing.System.Entity.BillType;
 import com.monika.Electricity.Billing.System.Entity.City;
 import com.monika.Electricity.Billing.System.Entity.Customers;
@@ -271,4 +276,139 @@ public class AdminController {
 		return result;
 	}
 
+	@PostMapping("/uploadCustomers")
+	public String uploadCustomers(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttrs) {
+		if(Excel.checkExcelFormat(file)) {
+			try {
+				List<Customers> customers = Excel.convertExcelToListOfCustomers(file.getInputStream());
+				if(customers.isEmpty()) {
+					redirectAttrs.addFlashAttribute("errorMessage", "Excel sheet not found. Please try again!");
+				}
+				
+				Iterator<Customers> it = customers.iterator();
+				
+				while(it.hasNext()) {
+					Customers cust = it.next();
+					
+					String stateId = "";
+					String cityId = "";
+					
+					State stateExist = stateRepo.findByNameContainingIgnoreCase(cust.getState());
+					if(stateExist == null) {
+						State stateDetails = new State();
+						stateDetails.setName(cust.getState());
+						stateDetails = stateRepo.save(stateDetails);
+						stateId = Integer.toString(stateDetails.getId());
+						City cityDetails = new City();
+						cityDetails.setName(cust.getCity());
+						cityDetails.setState(stateDetails);
+						cityDetails = cityRepo.save(cityDetails);
+						cityId = Integer.toString(cityDetails.getId());
+					}
+					else {
+						stateId = Integer.toString(stateExist.getId());
+						
+						City cityExist = cityRepo.findByNameContainingIgnoreCase(cust.getCity());
+						if(cityExist == null) {
+							City cityDetails = new City();
+							cityDetails.setName(cust.getCity());
+							cityDetails.setState(stateExist);
+							cityDetails = cityRepo.save(cityDetails);
+							cityId = Integer.toString(cityDetails.getId());
+						}
+						else if(cityExist.getState().getId() == stateExist.getId()) {
+							cityId = Integer.toString(cityExist.getId());
+						}
+						else {
+							cityId = null;
+						}
+					}
+					
+					String billTypeId = "";
+					BillType billTypeExist = billTypeRepo.findByNameContainingIgnoreCase(cust.getMeter().getBillType());
+					if(billTypeExist == null) {
+						BillType billType = new BillType();
+						billType.setName(cust.getMeter().getBillType());
+						billType = billTypeRepo.save(billType);
+						billTypeId = Integer.toString(billType.getId());
+					}
+					else {
+						billTypeId = Integer.toString(billTypeExist.getId());
+					}
+					
+					String meterLocationId = "";
+					MeterLocation meterLocationExist = meterLocationRepo.findByNameContainingIgnoreCase(cust.getMeter().getMeterLocation());
+					if(meterLocationExist == null) {
+						MeterLocation meterLocation = new MeterLocation();
+						meterLocation.setName(cust.getMeter().getMeterLocation());
+						meterLocation = meterLocationRepo.save(meterLocation);
+						meterLocationId = Integer.toString(meterLocation.getId());
+					}
+					else {
+						meterLocationId = Integer.toString(meterLocationExist.getId());
+					}
+					
+					String meterTypeId = "";
+					MeterType meterTypeExist = meterTypeRepo.findByNameContainingIgnoreCase(cust.getMeter().getMeterType());
+					if(meterTypeExist == null) {
+						MeterType meterType = new MeterType();
+						meterType.setName(cust.getMeter().getMeterType());
+						meterType = meterTypeRepo.save(meterType);
+						meterTypeId = Integer.toString(meterType.getId());
+					}
+					else {
+						meterTypeId = Integer.toString(meterTypeExist.getId());
+					}
+					
+					String phaseCodeId = "";
+					PhaseCode phaseCodeExist = phaseCodeRepo.findByNameContainingIgnoreCase(cust.getMeter().getPhaseCode());
+					if(phaseCodeExist == null) {
+						PhaseCode phaseCode = new PhaseCode();
+						phaseCode.setName(cust.getMeter().getPhaseCode());
+						phaseCode = phaseCodeRepo.save(phaseCode);
+						phaseCodeId = Integer.toString(phaseCode.getId());
+					}
+					else {
+						phaseCodeId = Integer.toString(phaseCodeExist.getId());
+					}
+					
+					Users user = new Users();
+					user.setName(cust.getUser().getName());
+					user.setPassword(cust.getUser().getPassword());
+					user.setUsername(cust.getUser().getUsername());
+					user.setUserType("ROLE_CUSTOMER");
+					
+					Customers c = new Customers();
+					c.setAddress(cust.getAddress());
+					c.setCity(cityId);
+					c.setEmail(cust.getEmail());
+					c.setName(cust.getName());
+					c.setPhone(cust.getPhone());
+					c.setState(stateId); 
+					c.setUser(user);
+					
+					Meters meter = new Meters();
+					meter.setBillType(billTypeId);
+					meter.setDays("30");
+					meter.setMeterLocation(meterLocationId);
+					meter.setMeterNo(cust.getMeter().getMeterNo());
+					meter.setMeterType(meterTypeId);
+					meter.setPhaseCode(phaseCodeId);
+					meter.setCustomer(c);
+					
+					redirectAttrs.addFlashAttribute("successMessage", "Customers Imported Successfully");
+					
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				redirectAttrs.addFlashAttribute("errorMessage", "Something went wrong. Please try again!");
+			}
+		}
+		else {
+			redirectAttrs.addFlashAttribute("errorMessage", "Incorrect Format!");
+		}
+		return "redirect:/admin/addCustomer";
+	}
+	
 }
