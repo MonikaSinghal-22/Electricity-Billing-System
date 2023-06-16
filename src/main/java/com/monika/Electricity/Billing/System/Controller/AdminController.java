@@ -2,10 +2,11 @@ package com.monika.Electricity.Billing.System.Controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,8 +24,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.monika.Electricity.Billing.Helper.Excel;
+import com.monika.Electricity.Billing.System.Entity.Bill;
 import com.monika.Electricity.Billing.System.Entity.BillType;
 import com.monika.Electricity.Billing.System.Entity.City;
+import com.monika.Electricity.Billing.System.Entity.Constant;
 import com.monika.Electricity.Billing.System.Entity.Customers;
 import com.monika.Electricity.Billing.System.Entity.MeterLocation;
 import com.monika.Electricity.Billing.System.Entity.MeterType;
@@ -34,11 +37,13 @@ import com.monika.Electricity.Billing.System.Entity.State;
 import com.monika.Electricity.Billing.System.Entity.Users;
 import com.monika.Electricity.Billing.System.Repository.BillTypeRepository;
 import com.monika.Electricity.Billing.System.Repository.CityRepository;
+import com.monika.Electricity.Billing.System.Repository.ConstantRepository;
 import com.monika.Electricity.Billing.System.Repository.MeterLocationRepository;
 import com.monika.Electricity.Billing.System.Repository.MeterTypeRepository;
 import com.monika.Electricity.Billing.System.Repository.PhaseCodeRepository;
 import com.monika.Electricity.Billing.System.Repository.StateRepository;
 import com.monika.Electricity.Billing.System.Repository.UserRepository;
+import com.monika.Electricity.Billing.System.Service.BillService;
 import com.monika.Electricity.Billing.System.Service.CustomerService;
 import com.monika.Electricity.Billing.System.Service.MeterService;
 import com.monika.Electricity.Billing.System.Service.UserService;
@@ -55,6 +60,8 @@ public class AdminController {
 	private CustomerService customerService;
 	@Autowired
 	private MeterService meterService;
+	@Autowired
+	private BillService billService;
 
 	@Autowired
 	private StateRepository stateRepo;
@@ -68,6 +75,8 @@ public class AdminController {
 	private MeterTypeRepository meterTypeRepo;
 	@Autowired
 	private PhaseCodeRepository phaseCodeRepo;
+	@Autowired
+	private ConstantRepository constantRepo;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -274,6 +283,39 @@ public class AdminController {
 		result.add(name);
 		result.add(address);
 		return result;
+	}
+	
+	@PostMapping("/saveBill")
+	public String saveBill(@ModelAttribute Bill bill, RedirectAttributes redirectAttrs) {
+		Meters meter = meterService.getMeterById(Integer.parseInt(bill.getMeterNo()));
+		bill.setMeterNo(meter.getMeterNo());
+		bill.setUsername(meter.getCustomer().getUser().getUsername());
+		bill.setStatus(false);
+		
+		Constant constant = constantRepo.findById(1).get();
+		Double costPerUnit = constant.getCostPerUnit();
+		Double fixedCharge = constant.getFixedCharge();
+		Double tax = constant.getTax()/100;
+		
+		bill.setCostPerUnit(costPerUnit);
+		bill.setFixedCharge(fixedCharge);
+		bill.setTax(constant.getTax());
+		
+		Double units = bill.getUnitsConsumed();
+		Double cost = (units * costPerUnit) + fixedCharge;
+		tax = cost * tax;
+		Double totalBill = cost + tax;
+		bill.setTotalBill(totalBill);
+		
+		
+		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		bill.setBillGenerationDate(df.format(new Date()));
+		
+		billService.createBill(bill);
+		
+		redirectAttrs.addFlashAttribute("successMessage", "Bill Generated Successfully.");
+		
+		return "redirect:/admin/calculateBill";
 	}
 
 	@PostMapping("/uploadCustomers")

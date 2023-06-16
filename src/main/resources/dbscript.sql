@@ -49,3 +49,5 @@ insert into phase_code values(9,099);
 
 insert into bill_type values(1,"Normal");
 insert into bill_type values(2,"Industrial");
+
+insert into constant values(1,10,100,18);
