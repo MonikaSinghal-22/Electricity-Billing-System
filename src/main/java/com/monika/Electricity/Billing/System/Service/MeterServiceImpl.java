@@ -34,5 +34,10 @@ public class MeterServiceImpl implements MeterService {
 		return meterRepo.getAllByActiveCustomerId(activeCustomerIds);
 	}
 
+	@Override
+	public Meters getMeterByMeterNo(String meterNo) {
+		return meterRepo.getByMeterNo(meterNo);
+	}
+
 	
 }

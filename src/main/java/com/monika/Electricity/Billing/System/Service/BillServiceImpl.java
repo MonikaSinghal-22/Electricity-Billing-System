@@ -1,5 +1,7 @@
 package com.monika.Electricity.Billing.System.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +18,17 @@ public class BillServiceImpl implements BillService {
 	public Bill createBill(Bill bill) {
 		return billRepo.save(bill);
 	}
+
+	@Override
+	public List<Bill> getAllBills() {
+		return billRepo.findAll();
+	}
+
+	@Override
+	public Bill getBillById(int id) {
+		return billRepo.findById(id).get();
+	}
+	
+	
 
 }

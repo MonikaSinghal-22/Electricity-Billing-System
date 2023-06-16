@@ -14,4 +14,6 @@ public interface MeterRepository extends JpaRepository<Meters,Integer>{
 	
 	@Query("From Meters where customer.id in :activeCustomerIds")
 	List<Meters> getAllByActiveCustomerId(List<Integer> activeCustomerIds);
+
+	Meters getByMeterNo(String meterNo);
 }

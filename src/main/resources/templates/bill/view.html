@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lan="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<head>
+<meta charset="UTF-8">
+<title>View Bill</title>
+</head>
+<body>
+<section>
+	<div class="pagetitle">
+		<h1>Dashboard</h1>
+		<nav>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/admin/dashboard"><i class="bi bi-house-door"></i></a></li>
+				<li class="breadcrumb-item active">Bill - View</li>
+			</ol>
+		</nav>
+	</div>
+	<div class="container">			
+			<div class="row">
+					<div class="col-lg-4">
+						<div class=card>
+							<div class="card-header">
+								<h5 class="card-title">Customer Info</h5>
+							</div>
+							<div class="card-body">
+								<div class="row mb-3 mt-3">
+									<label for="username" class="col-sm-3 col-form-label">Username</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="username" th:value="${meter.customer.user.username}" required readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="name" class="col-sm-3 col-form-label">Name</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="name" th:value="${meter.customer.name}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="email" class="col-sm-3 col-form-label">Email</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="email" th:value="${meter.customer.email}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="phone" class="col-sm-3 col-form-label">Phone</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="phone" th:value="${meter.customer.phone}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">State</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="state" th:value="${state}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">City</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="city" th:value="${city}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="address" class="col-sm-3 col-form-label">Address</label>
+									<div class="col-sm-9">
+										<textarea class="form-control" style="height: 100px"
+											name="address" readonly>[[${meter.customer.address}]]</textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class=card>
+							<div class="card-header">
+								<h5 class="card-title">Meter Info</h5>
+							</div>
+							<div class="card-body">
+								<div class="row mb-3 mt-3">
+									<label for="meter" class="col-sm-3 col-form-label">Meter
+										No.</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="meterNo" th:value="${bill.meterNo}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">Meter Location</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="meterLocation" th:value="${meterLocation}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">Meter Type</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="meterType" th:value="${meterType}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">Phase Code</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="phaseCode" th:value="${phaseCode}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-sm-3 col-form-label">Bill Type</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="billType" th:value="${billType}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="days" class="col-sm-3 col-form-label">Days</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="days" value="30"
+											readonly>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class=card>
+							<div class="card-header">
+								<h5 class="card-title">Bill Info <span  th:class="${bill.status} ? 'badge bg-success' : 'badge bg-danger' " th:text="${bill.status} ? 'Paid' : 'Not Paid' "></span></h5>
+								
+							</div>
+							<div class="card-body">
+								<div class="row mb-3 mt-3">
+									<label class="col-sm-3 col-form-label">Units Consumed</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="unitsConsumed" th:value="${bill.unitsConsumed}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3 mt-3">
+									<label class="col-sm-3 col-form-label">Cost</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="cost" th:value="${bill.unitsConsumed * bill.costPerUnit}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3 mt-3">
+									<label class="col-sm-3 col-form-label">Fixed Charge</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="fixedCharge" th:value="${bill.fixedCharge}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3 mt-3">
+									<label class="col-sm-3 col-form-label">Tax</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="tax" th:value="${(bill.unitsConsumed * bill.costPerUnit + bill.fixedCharge) * (bill.tax/100)}" readonly>
+									</div>
+								</div>
+								<div class="row mb-3 mt-3">
+									<label class="col-sm-3 col-form-label">Total Bill</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="tax" th:value="${bill.totalBill}" readonly>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="text-center">
+						<button type="button" name="close" url="/admin/bills" onclick="closeButton(this)" class="btn btn-primary">Close</button>
+					</div>
+			</div>
+	</div>
+	
+</section>
+</body>
+</html>

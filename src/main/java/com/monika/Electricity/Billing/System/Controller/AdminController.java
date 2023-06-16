@@ -317,6 +317,35 @@ public class AdminController {
 		
 		return "redirect:/admin/calculateBill";
 	}
+	
+	@GetMapping("/bills")
+	public String getBills(Model m) {
+		List<Bill> billList = billService.getAllBills();
+		m.addAttribute("billList", billList);
+		return "bill/index";
+	}
+	
+	@GetMapping("/viewBill/{bill_id}")
+	public String viewBill(@PathVariable("bill_id") int id ,Model m) {
+		Bill bill = billService.getBillById(id);
+		Meters meter = meterService.getMeterByMeterNo(bill.getMeterNo());
+		State state = stateRepo.findById(Integer.parseInt( meter.getCustomer().getState())).get();
+		City city = cityRepo.findById(Integer.parseInt( meter.getCustomer().getCity())).get();
+		MeterLocation meterLocation = meterLocationRepo.findById(Integer.parseInt(meter.getMeterLocation())).get();
+		MeterType meterType = meterTypeRepo.findById(Integer.parseInt(meter.getMeterType())).get();
+		PhaseCode phaseCode = phaseCodeRepo.findById(Integer.parseInt(meter.getPhaseCode())).get();
+		BillType billType = billTypeRepo.findById(Integer.parseInt(meter.getBillType())).get();
+		m.addAttribute("meter", meter);
+		m.addAttribute("bill", bill);
+		m.addAttribute("state", state.getName());
+		m.addAttribute("city", city.getName());
+		m.addAttribute("meterLocation", meterLocation.getName());
+		m.addAttribute("meterType", meterType.getName());
+		m.addAttribute("phaseCode", phaseCode.getName());
+		m.addAttribute("billType", billType.getName());
+		
+		return "bill/view";
+	}
 
 	@PostMapping("/uploadCustomers")
 	public String uploadCustomers(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttrs) {

@@ -13,5 +13,7 @@ public interface MeterService {
 	public Meters getMeterById(int meterId);
 	
 	public List<Meters> getAllEnabledCustomersMeter(List<Integer> activeCustomerIds);
+
+	public Meters getMeterByMeterNo(String meterNo);
 	
 }
