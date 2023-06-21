@@ -27,7 +27,7 @@ function getCustomerDetailsFromMeterNo(element){
 			success: function(result){
 				name = result[0];
 				address = result[1];
-				$("#customerName").val(name);
+				$("#customerUsername").val(username);
 				$("#customerAddress").val(address);			
 			},
 			error: (error) => {

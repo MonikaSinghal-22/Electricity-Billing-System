@@ -277,10 +277,10 @@ public class AdminController {
 	@GetMapping("/getCustomerDetailsFromMeterId/{meter_id}")
 	public List<String> getCustomerDetailsFromMeterId(@PathVariable("meter_id") int meterId) {
 		Meters meter = meterService.getMeterById(meterId);
-		String name = meter.getCustomer().getName();
+		String username = meter.getCustomer().getUser().getUsername();
 		String address = meter.getCustomer().getAddress();
 		List<String> result = new ArrayList<>();
-		result.add(name);
+		result.add(username);
 		result.add(address);
 		return result;
 	}
@@ -345,6 +345,48 @@ public class AdminController {
 		m.addAttribute("billType", billType.getName());
 		
 		return "bill/view";
+	}
+	
+	@GetMapping("/editBill/{bill_id}")
+	public String editBill(@PathVariable("bill_id") int id, Model m) {
+		Bill bill = billService.getBillById(id);
+		Meters meter = meterService.getMeterByMeterNo(bill.getMeterNo());
+		String address = meter.getCustomer().getAddress();
+		m.addAttribute("bill", bill);
+		m.addAttribute("address", address);
+		return "bill/edit";
+	}
+	
+	@PostMapping("/updateBill")
+	public String updateBill(@ModelAttribute Bill bill, RedirectAttributes redirectAttrs) {
+		
+		Bill originalBill = billService.getBillById(bill.getId());
+		
+		if(originalBill.getUnitsConsumed() != bill.getUnitsConsumed()) {
+			Constant constant = constantRepo.findById(1).get();
+			Double costPerUnit = constant.getCostPerUnit();
+			Double fixedCharge = constant.getFixedCharge();
+			Double tax = constant.getTax()/100;
+			
+			bill.setCostPerUnit(costPerUnit);
+			bill.setFixedCharge(fixedCharge);
+			bill.setTax(constant.getTax());
+			
+			Double units = bill.getUnitsConsumed();
+			Double cost = (units * costPerUnit) + fixedCharge;
+			tax = cost * tax;
+			Double totalBill = cost + tax;
+			bill.setTotalBill(totalBill);
+		}
+		
+		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		bill.setBillGenerationDate(df.format(new Date()));
+		
+		Bill b = billService.createBill(bill);
+		
+		bill.setId(b.getId());
+		redirectAttrs.addFlashAttribute("successMessage", "Bill Updated Successfully.");
+		return "redirect:/admin/editBill/" + bill.getId();
 	}
 
 	@PostMapping("/uploadCustomers")

@@ -3,7 +3,7 @@
 	th:replace="base::layout(~{::section})">
 <head>
 <meta charset="UTF-8">
-<title>Create Bill</title>
+<title>Edit Bill</title>
 </head>
 <body>
 	<section>
@@ -13,7 +13,7 @@
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="/admin/dashboard"><i
 							class="bi bi-house-door"></i></a></li>
-					<li class="breadcrumb-item active">Bill - Add</li>
+					<li class="breadcrumb-item active">Bill - Edit</li>
 				</ol>
 			</nav>
 		</div>
@@ -26,57 +26,59 @@
 				<span th:text="${failureMessage}"></span>
 			</div>
 			<div class="row">
-				<form class="row" action="/admin/saveBill" method="post">
+				<form class="row" action="/admin/updateBill" method="post">
 					<div class="col-lg-12">
 						<div class=card>
 							<div class="card-header">
-								<h5 class="card-title">Create Bill</h5>
+								<h5 class="card-title">Edit Bill</h5>
 							</div>
 							<div class="card-body">
+								<input type="hidden" th:value="${bill.id}" name="id">
+								<input type="hidden" th:value="${bill.costPerUnit}" name="costPerUnit">
+								<input type="hidden" th:value="${bill.fixedCharge}" name="fixedCharge">
+								<input type="hidden" th:value="${bill.tax}" name="tax">
+								<input type="hidden" th:value="${bill.totalBill}" name="totalBill">
 								<div class="row mb-3">
 									<label class="col-sm-3 col-form-label">Meter No.</label>
 									<div class="col-sm-9">
-										<select name="meterNo" id="meterNo" class="form-select" onchange="getCustomerDetailsFromMeterNo(this)">
-											<option value=" ">Select Meter</option>
-											<option th:each="meter : ${listMeter}" th:value="${meter.id}" th:text="${meter.meterNo}"></option>
-										</select>
+										<input type="text" class="form-control" name="meterNo" id="meterNo" th:value="${bill.meterNo}" readonly>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<label for="name" class="col-sm-3 col-form-label">UserName</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control" name="username" id="customerUsername" readonly>
+										<input type="text" class="form-control" name="username" id="customerUsername"  th:value="${bill.username}" readonly>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<label for="address" class="col-sm-3 col-form-label">Address</label>
 									<div class="col-sm-9">
 										<textarea class="form-control" style="height: 100px"
-											name="address" id="customerAddress" readonly></textarea>
+											name="address" id="customerAddress" readonly>[[${address}]]</textarea>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<label for="days" class="col-sm-3 col-form-label">Units Consumed</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control" name="unitsConsumed">
+										<input type="text" class="form-control" name="unitsConsumed" th:value="${bill.unitsConsumed}">
 									</div>
 								</div>
 								<div class="row mb-3">
 									<label class="col-sm-3 col-form-label">Month</label>
 									<div class="col-sm-9">
 										<select class="form-select" name="month">
-											<option value="01">January</option>
-											<option value="02">February</option>
-											<option value="03">March</option>
-											<option value="04">April</option>
-											<option value="05">May</option>
-											<option value="06">June</option>
-											<option value="07">July</option>
-											<option value="08">August</option>
-											<option value="09">September</option>
-											<option value="10">October</option>
-											<option value="11">November</option>
-											<option value="12">December</option>
+											<option value="01" th:selected="${bill.month == 1}">January</option>
+											<option value="02" th:selected="${bill.month == 2}">February</option>
+											<option value="03" th:selected="${bill.month == 3}">March</option>
+											<option value="04" th:selected="${bill.month == 4}">April</option>
+											<option value="05" th:selected="${bill.month == 5}">May</option>
+											<option value="06" th:selected="${bill.month == 6}">June</option>
+											<option value="07" th:selected="${bill.month == 7}">July</option>
+											<option value="08" th:selected="${bill.month == 8}">August</option>
+											<option value="09" th:selected="${bill.month == 9}">September</option>
+											<option value="10" th:selected="${bill.month == 10}">October</option>
+											<option value="11" th:selected="${bill.month == 11}">November</option>
+											<option value="12" th:selected="${bill.month == 12}">December</option>
 										</select>
 									</div>
 								</div>
@@ -84,7 +86,7 @@
 						</div>
 					</div>
 					<div class="text-center">
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="submit" class="btn btn-primary">Update</button>
 						<button type="button" url="/admin/dashboard" onclick="closeButton(this)" class="btn btn-secondary">Close</button>
 					</div>
 				</form>
