@@ -12,4 +12,6 @@ public interface BillService {
 	
 	Bill getBillById(int id);
 
+	boolean deleteBill(int id);
+
 }

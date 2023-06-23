@@ -28,7 +28,7 @@
 									<h5 class="card-title">Bills</h5>
 								</div>
 								<div class="col-auto">
-									<a href="/admin/addCustomer"
+									<a href="/admin/calculateBill"
 										class="btn btn-outline-primary">Create Bill</a>
 								</div>
 							</div>
@@ -60,7 +60,7 @@
 											<td>
 												<a class="ms-2" th:href="@{/admin/viewBill/{id}(id=${b.id})}"><i class="fa-solid fa-eye"></i></a>
 												<a class="ms-2" th:href="@{/admin/editBill/{id}(id=${b.id})}" ><i class="fa-solid fa-pen-to-square"></i></a>
-												<a class="ms-2" th:href="@{/admin/deleteCustomer/{id}(id=${b.id})}"><i class="fa-solid fa-trash"></i></a>
+												<a class="ms-2" th:href="@{/admin/deleteBill/{id}(id=${b.id})}"><i class="fa-solid fa-trash"></i></a>
 											</td>
 										</tr>
 									</tbody>

@@ -25,7 +25,7 @@ function getCustomerDetailsFromMeterNo(element){
 			type: 'GET', 
 			url: '/admin/getCustomerDetailsFromMeterId/' + element.value, 
 			success: function(result){
-				name = result[0];
+				username = result[0];
 				address = result[1];
 				$("#customerUsername").val(username);
 				$("#customerAddress").val(address);			

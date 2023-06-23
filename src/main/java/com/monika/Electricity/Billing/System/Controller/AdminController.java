@@ -388,6 +388,12 @@ public class AdminController {
 		redirectAttrs.addFlashAttribute("successMessage", "Bill Updated Successfully.");
 		return "redirect:/admin/editBill/" + bill.getId();
 	}
+	
+	@GetMapping("/deleteBill/{bill_id}")
+	public String deleteBill(@PathVariable("bill_id") int id) {
+		billService.deleteBill(id);
+		return "redirect:/admin/bills";
+	}
 
 	@PostMapping("/uploadCustomers")
 	public String uploadCustomers(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttrs) {

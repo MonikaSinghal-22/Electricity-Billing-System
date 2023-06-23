@@ -28,6 +28,12 @@ public class BillServiceImpl implements BillService {
 	public Bill getBillById(int id) {
 		return billRepo.findById(id).get();
 	}
+
+	@Override
+	public boolean deleteBill(int id) {
+		billRepo.deleteById(id);
+		return true;
+	}
 	
 	
 
